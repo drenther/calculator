@@ -11,3 +11,7 @@ export const ifCurrentNeedsToBeAppended = current => current !== '0' && !isNaN(p
 export const ifCurrentIsInteger = current => isFinite(parseInt(current, 10))
 
 export const ifCurrentIsNumber = current => isFinite(parseFloat(current, 10))
+
+export const roundToTwoDecimal = num => Math.round(num * 100) / 100
+
+export const ifLimitReached = current => current.length > 9

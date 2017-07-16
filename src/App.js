@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Display, Button } from './components';
-import { numberEntry, decimalHelper, operatorHelper } from './libs';
+import { numberEntry, decimalHelper, operatorHelper, equalsHelper, ifLimitReached } from './libs';
 
 class App extends Component {
 	state = {
@@ -12,10 +12,17 @@ class App extends Component {
 	_clickHandlerForNumber = (number) => {
 		const current = this.state.current,
 			stack = [...this.state.stack];
+		let warning = '';
 		const res = numberEntry(current, stack, number);
+		if ( ifLimitReached(res.current) ) {
+			res.current = '0';
+			res.stack = ['0'];
+			warning = 'show';
+		}
 		this.setState({
 			current: res.current,
-			stack: res.stack
+			stack: res.stack,
+			warning
 		});
 	}
 	
@@ -25,7 +32,8 @@ class App extends Component {
 		const res = operatorHelper(current, stack, operator);
 		this.setState({
 			current: res.current,
-			stack: res.stack
+			stack: res.stack,
+			warning: ''
 		});
 	}
 
@@ -35,45 +43,26 @@ class App extends Component {
 		const res = decimalHelper(current, stack);
 		this.setState({
 			current: res.current,
-			stack: res.stack
+			stack: res.stack,
+			warning: ''
 		})
 	}
 
 	_clickHandlerForEquals = () => {
-		const stack = [...this.state.stack];
-		const current = this.state.current;
-		if (isFinite(parseFloat(current, 10)) && stack.length > 2 && !stack.includes('=')) {
-			let result = 0;
-			for (let i = 1, term1, operator, term2; i < stack.length; i+=2) {
-				term1 = (i === 1) ? parseFloat(stack[0], 10) : result;
-				operator = stack[i];
-				term2 = parseFloat(stack[i+1]);
-				switch (operator) {
-					case '+':
-						result = term1 + term2; 
-						break;
-					case '-':
-						result = term1 - term2;
-						break;
-					case 'x':
-						result = term1 * term2;
-						break;
-					default:
-						result = term1 / term2;
-				}
-			}
-			if (result > 8) {
-				this.setState({
-					stack: [],
-					current: 'Limit'
-				});
-			}
-			stack.push('=', `${result}`);
-			this.setState({
-				stack,
-				current: `${result}`
-			});
+		const stack = [...this.state.stack], 
+			current = this.state.current;
+		let warning = '';
+		const res = equalsHelper(current, stack);
+		if ( ifLimitReached(res.current) ) {
+			res.current = '0';
+			res.stack = ['0'];
+			warning = 'show';
 		}
+		this.setState({
+			current: res.current,
+			stack: res.stack,
+			warning
+		});
 	}
 
 	_clickHandlerForClearEntry = () => {
@@ -89,7 +78,8 @@ class App extends Component {
 			}
 			this.setState({
 				stack,
-				current
+				current,
+				warning: ''
 			});
 		}
 	}
@@ -97,7 +87,8 @@ class App extends Component {
 	_clickHandlerForAllClear = () => {
 		this.setState({
 			stack: ['0'],
-			current: '0'
+			current: '0',
+			warning: ''
 		})
 	}
 
