@@ -1,9 +1,11 @@
 import React from 'react';
 
 export const Button = (props) => {
+	let classes = props.special ? `button special` : 'button';
+	let val = props.for;
 	return (
-		<div className="button">
-			{props.for}
-		</div>
+		<button className={classes} onClick={props.clickHandler.bind(null, val)}>
+			{val}
+		</button>
 	);
 };

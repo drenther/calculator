@@ -1,11 +1,14 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-export class Display extends Component {
-	render() {
-		return (
-			<div>
-				
+export const Display = (props) => {
+	return (
+		<div className="display">
+			<div className="current">
+				{props.current}
 			</div>
-		);
-	}
-}
+			<div className="stack">
+				{props.stack.join('')}			
+			</div>
+		</div>
+	);
+};
