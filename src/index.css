@@ -25,6 +25,15 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center; }
+  .app .warning {
+    color: #fff;
+    font-family: "Orbitron", sans-serif;
+    padding-bottom: 10px;
+    font-weight: 600;
+    transition: opacity 2s;
+    opacity: 0; }
+    .app .warning.show {
+      opacity: 1; }
   .app .display {
     width: 100%;
     flex-basis: 20%;

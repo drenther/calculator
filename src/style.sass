@@ -30,6 +30,16 @@ body
 	width: 300px
 	+flex(column, center, center)
 
+	.warning
+		color: #fff
+		font-family: 'Orbitron', sans-serif
+		padding-bottom: 10px
+		font-weight: 600
+		transition: opacity 2s
+		opacity: 0
+		&.show
+			opacity: 1
+
 	.display
 		width: 100%
 		flex-basis: 20%
