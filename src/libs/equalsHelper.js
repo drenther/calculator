@@ -1,12 +1,20 @@
-import { ifCurrentIsNumber, ifStackHasEquals, roundToTwoDecimal } from './utils.js';
+import {
+	ifCurrentIsNumber,
+	ifStackHasEquals,
+	roundToTwoDecimal,
+} from './utils.js';
 
 export const equalsHelper = (current, stack) => {
-	if (ifCurrentIsNumber(current) && !ifStackHasEquals(stack) && stack.length > 2) {
+	if (
+		ifCurrentIsNumber(current) &&
+		!ifStackHasEquals(stack) &&
+		stack.length > 2
+	) {
 		let result = 0;
 		for (let i = 1, term1, operator, term2; i < stack.length; i += 2) {
-			term1 = (i === 1) ? parseFloat(stack[0], 10) : result;
+			term1 = i === 1 ? parseFloat(stack[0], 10) : result;
 			operator = stack[i];
-			term2 = parseFloat(stack[i+1]);
+			term2 = parseFloat(stack[i + 1]);
 			switch (operator) {
 				case '+':
 					result = term1 + term2;
@@ -25,5 +33,5 @@ export const equalsHelper = (current, stack) => {
 		current = roundToTwoDecimal(result);
 		stack.push(`${current}`);
 	}
-	return {current, stack};
+	return { current, stack };
 };
